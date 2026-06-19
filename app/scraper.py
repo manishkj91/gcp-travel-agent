@@ -8,8 +8,11 @@ async def scrape_highlights(destination: str) -> str:
     url = f"https://en.wikipedia.org/wiki/{query}"
     
     try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
         async with httpx.AsyncClient(timeout=10.0) as client:
-            response = await client.get(url, follow_redirects=True)
+            response = await client.get(url, headers=headers, follow_redirects=True)
             if response.status_code != 200:
                 logging.warning(f"Could not scrape Wikipedia for {destination}. Status: {response.status_code}")
                 return "No real-time attraction data scraped."
